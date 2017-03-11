@@ -1,0 +1,27 @@
+---
+
+- name: Run get_macs module to get list of all macs on server
+  get_macs: get_facts=yes
+
+- name: Check if server exists in Craton
+  uri:
+    url: "{{ craton_url }}/hosts?details=all&vars=macs:{{ item }}"
+    method: GET
+    return_content: yes
+    headers:
+      X-Auth-User: "{{ craton_user }}"
+      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-Project: "{{ craton_project }}"
+  register: mac_lookup
+  with_items:
+    - "{{ hardware_macs }}"
+
+- name: set server_number to craton server id
+  set_fact:
+    server_number: "{{ mac_lookup.json.hosts.0.id }}"
+  when:
+    - mac_lookup.json.hosts.0.id is defined
+
+- include: discover.yml
+  when:
+    - mac_lookup.json.hosts.0.id is not defined

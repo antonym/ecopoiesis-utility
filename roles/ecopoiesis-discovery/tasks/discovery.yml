@@ -1,0 +1,59 @@
+---
+
+- name: Generate random UUID
+  shell: uuidgen
+  register: uuid_name
+
+- name: Set uuid fact
+  set_fact:
+     server_name: "{{ uuid_name.stdout | replace('-','') }}"
+
+- name: create server record with inventory
+  uri:
+    url: "{{ craton_url }}/hosts"
+    method: POST
+    body: '{"cloud_id": 1, "region_id": 1, "cell_id": 1, "name": "{{ server_name }}", "ip_address": "10.127.5.111", "device_type": "server"}'
+    body_format: json
+    status_code: 201
+    headers:
+      X-Auth-User: "{{ craton_user }}"
+      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-Project: "{{ craton_project }}"
+      Content-Type: application/json
+  register: server_created
+
+- name: set server_number to newly created host
+  set_fact:
+    server_number: "{{ server_created.json.id }}"
+  when:
+    - server_created.json.id is defined
+
+- name: update server name to server-id
+  uri:
+    url: "{{ craton_url }}/hosts/{{ server_number }}"
+    method: PUT
+    body: '{"name": "server-{{ server_number }}"}'
+    body_format: json
+    status_code: 200
+    headers:
+      X-Auth-User: "{{ craton_user }}"
+      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-Project: "{{ craton_project }}"
+      Content-Type: application/json
+  when:
+    - server_created.json.id is defined
+
+- name: update variables on server with macs
+  uri:
+    url: "{{ craton_url }}/hosts/{{server_number}}/variables"
+    method: PUT
+    body: '{"macs": {{ hardware_macs | to_json }}}'
+    body_format: json
+    status_code: 200
+    headers:
+      X-Auth-User: "{{ craton_user }}"
+      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-Project: "{{ craton_project }}"
+      Content-Type: application/json
+  when:
+    - server_created.json.id is defined

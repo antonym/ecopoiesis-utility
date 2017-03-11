@@ -1,0 +1,25 @@
+#!/bin/bash
+# gets all mac addresses for any interface matching e* (eth* and en*)
+# yes, i know this scary ugly... stupid ending comma
+INTERFACES=`ls -d -a /sys/class/net/e*`
+COUNT=0
+for interface in $INTERFACES; do
+   COUNT=$((COUNT+1))
+done
+echo '{'
+echo '   "ansible_facts" : {'
+echo '       "hardware_macs" : ['
+INT_COUNT=$COUNT
+for interface in $INTERFACES; do
+   INT_COUNT=$((INT_COUNT-1))
+   DEVICE=`echo $interface | grep -oE "[^/]+$"`
+   ADDRESS=`cat ${interface}/address`
+   if [ $INT_COUNT == 0 ]; then
+     echo "          \"$ADDRESS\""
+   else
+     echo "          \"$ADDRESS\","
+   fi
+done
+echo "       ]"
+echo "    }"
+echo "}   "

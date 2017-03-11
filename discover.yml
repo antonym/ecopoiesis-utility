@@ -4,4 +4,4 @@
   vars:
     ecopoiesis_enabled: true
   roles:
-    - discover
+    - ecopoiesis-discover

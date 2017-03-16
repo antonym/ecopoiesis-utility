@@ -43,11 +43,14 @@
   when:
     - server_created.json.id is defined
 
+########### testing
+
 - name: update variables on server with macs
   uri:
     url: "{{ craton_url }}/hosts/{{server_number}}/variables"
     method: PUT
-    body: '{"macs": {{ hardware_macs | to_json }}}'
+    body: '{"macs": {{ hardware_macs.0 | to_json }} }'
+  #  body: '{"macs": {{ hardware_macs | to_json }}}'
     body_format: json
     status_code: 200
     headers:
@@ -57,3 +60,33 @@
       Content-Type: application/json
   when:
     - server_created.json.id is defined
+
+- name: push up variables for testing
+  uri:
+    url: "{{ craton_url }}/hosts/{{server_number}}/variables"
+    method: PUT
+    body: "{\"{{ item.key }}\": \"{{ item.value }}\" }"
+  #  body: '{"macs": {{ hardware_macs | to_json }}}'
+    body_format: json
+    status_code: 200
+    headers:
+      X-Auth-User: "{{ craton_user }}"
+      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-Project: "{{ craton_project }}"
+      Content-Type: application/json
+  when:
+    - server_created.json.id is defined
+  with_items:
+    - { key: 'ecopoiesis_bootstrapped', value: 'None' }
+    - { key: 'ecopoiesis_boot_os', value: 'ubuntu' }
+    - { key: 'ecopoiesis_boot_os_version', value: 'xenial' }
+    - { key: 'ecopoiesis_boot_status', value: 'provision' }
+    - { key: 'ecopoiesis_operational_status', value: 'None' }
+    - { key: 'ecopoiesis_enforce_firmware', value: 'false' }
+    - { key: 'datacenter', value: 'dfw' }
+    - { key: 'primary_dns', value: '8.8.8.8' }
+    - { key: 'secondary_dns', value: '8.8.4.4' }
+    - { key: 'mgmt_ip_address', value: '1.2.3.4' }
+    - { key: 'mgmt_gateway_ip', value: '1.2.3.1' }
+    - { key: 'mgmt_netmask', value: '255.255.255.0' }
+    - { key: 'server_name', value: 'this.is.a.test.com' }

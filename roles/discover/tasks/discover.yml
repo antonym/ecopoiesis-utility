@@ -49,8 +49,8 @@
   uri:
     url: "{{ craton_url }}/hosts/{{server_number}}/variables"
     method: PUT
-    body: '{"macs": {{ hardware_macs.0 | to_json }} }'
-  #  body: '{"macs": {{ hardware_macs | to_json }}}'
+#    body: '{"macs": {{ hardware_macs.0 | to_json }} }'
+    body: '{"macs": {{ hardware_macs | to_json }}}'
     body_format: json
     status_code: 200
     headers:

@@ -5,8 +5,9 @@
 
 - name: Check if server exists in Craton
   uri:
-    url: "{{ craton_url }}/hosts?details=all&vars=macs:{{ mac_test }}"
+#    url: "{{ craton_url }}/hosts?details=all&vars=macs:{{ mac_test }}"
 #    url: "{{ craton_url }}/hosts?details=all&vars=macs:{{ item }}"
+    url: "{{ craton_url }}/hosts?details=all&vars=macs[*]:{{ item }}"
     method: GET
     return_content: yes
     headers:
@@ -14,15 +15,17 @@
       X-Auth-Token: "{{ craton_key }}"
       X-Auth-Project: "{{ craton_project }}"
   register: mac_lookup
-#  with_items:
-#    - "{{ hardware_macs }}"
+  with_items:
+    - "{{ hardware_macs }}"
 
 - name: set server_number to craton server id
   set_fact:
-    server_number: "{{ mac_lookup.json.hosts.0.id }}"
+#    server_number: "{{ mac_lookup.json.hosts.0.id }}"
+     server_number: "{{ mac_lookup.results.0.json.hosts.0.id }}"
   when:
-    - mac_lookup.json.hosts.0.id is defined
-
+#    - mac_lookup.json.hosts.0.id is defined
+    - mac_lookup.results.0.json.hosts.0.id
 - include: discover.yml
   when:
-    - mac_lookup.json.hosts.0.id is not defined
+#    - mac_lookup.json.hosts.0.id is not defined
+    - mac_lookup.results.0.json.hosts.0.id is not defined

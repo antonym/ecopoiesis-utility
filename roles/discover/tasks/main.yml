@@ -3,6 +3,11 @@
 - name: Run get_macs module to get list of all macs on server
   get_macs: get_facts=yes
 
+- name: Include craton vars from /proc/cmdline
+  include_vars:
+    file: /proc/cmdline
+    name: cmdline
+
 - name: Check if server exists in Craton
   uri:
 #    url: "{{ craton_url }}/hosts?details=all&vars=macs:{{ mac_test }}"
@@ -11,8 +16,8 @@
     method: GET
     return_content: yes
     headers:
-      X-Auth-User: "{{ craton_user }}"
-      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-User: "{{ craton_username }}"
+      X-Auth-Token: "{{ craton_password }}"
       X-Auth-Project: "{{ craton_project }}"
   register: mac_lookup
   with_items:

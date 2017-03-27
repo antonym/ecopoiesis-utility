@@ -16,8 +16,8 @@
     body_format: json
     status_code: 201
     headers:
-      X-Auth-User: "{{ craton_user }}"
-      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-User: "{{ craton_username }}"
+      X-Auth-Token: "{{ craton_password }}"
       X-Auth-Project: "{{ craton_project }}"
       Content-Type: application/json
   register: server_created
@@ -36,8 +36,8 @@
     body_format: json
     status_code: 200
     headers:
-      X-Auth-User: "{{ craton_user }}"
-      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-User: "{{ craton_username }}"
+      X-Auth-Token: "{{ craton_password }}"
       X-Auth-Project: "{{ craton_project }}"
       Content-Type: application/json
   when:
@@ -54,8 +54,8 @@
     body_format: json
     status_code: 200
     headers:
-      X-Auth-User: "{{ craton_user }}"
-      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-User: "{{ craton_username }}"
+      X-Auth-Token: "{{ craton_password }}"
       X-Auth-Project: "{{ craton_project }}"
       Content-Type: application/json
   when:
@@ -70,8 +70,8 @@
     body_format: json
     status_code: 200
     headers:
-      X-Auth-User: "{{ craton_user }}"
-      X-Auth-Token: "{{ craton_key }}"
+      X-Auth-User: "{{ craton_username }}"
+      X-Auth-Token: "{{ craton_password }}"
       X-Auth-Project: "{{ craton_project }}"
       Content-Type: application/json
   when:

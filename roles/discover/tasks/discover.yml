@@ -10,15 +10,15 @@
 
 - name: create server record with inventory
   uri:
-    url: "{{ craton_url }}/hosts"
+    url: "{{ ansible_cmdline.craton_url }}/hosts"
     method: POST
     body: '{"cloud_id": 1, "region_id": 1, "cell_id": 1, "name": "{{ server_name }}", "ip_address": "10.127.5.111", "device_type": "server"}'
     body_format: json
     status_code: 201
     headers:
-      X-Auth-User: "{{ craton_username }}"
-      X-Auth-Token: "{{ craton_password }}"
-      X-Auth-Project: "{{ craton_project }}"
+      X-Auth-User: "{{ ansible_cmdline.craton_username }}"
+      X-Auth-Token: "{{ ansible_cmdline.craton_password }}"
+      X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
       Content-Type: application/json
   register: server_created
 
@@ -30,15 +30,15 @@
 
 - name: update server name to server-id
   uri:
-    url: "{{ craton_url }}/hosts/{{ server_number }}"
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ server_number }}"
     method: PUT
     body: '{"name": "server-{{ server_number }}"}'
     body_format: json
     status_code: 200
     headers:
-      X-Auth-User: "{{ craton_username }}"
-      X-Auth-Token: "{{ craton_password }}"
-      X-Auth-Project: "{{ craton_project }}"
+      X-Auth-User: "{{ ansible_cmdline.craton_username }}"
+      X-Auth-Token: "{{ ansible_cmdline.craton_password }}"
+      X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
       Content-Type: application/json
   when:
     - server_created.json.id is defined
@@ -47,32 +47,32 @@
 
 - name: update variables on server with macs
   uri:
-    url: "{{ craton_url }}/hosts/{{server_number}}/variables"
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{server_number}}/variables"
     method: PUT
 #    body: '{"macs": {{ hardware_macs.0 | to_json }} }'
     body: '{"macs": {{ hardware_macs | to_json }}}'
     body_format: json
     status_code: 200
     headers:
-      X-Auth-User: "{{ craton_username }}"
-      X-Auth-Token: "{{ craton_password }}"
-      X-Auth-Project: "{{ craton_project }}"
+      X-Auth-User: "{{ ansible_cmdline.craton_username }}"
+      X-Auth-Token: "{{ ansible_cmdline.craton_password }}"
+      X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
       Content-Type: application/json
   when:
     - server_created.json.id is defined
 
 - name: push up variables for testing
   uri:
-    url: "{{ craton_url }}/hosts/{{server_number}}/variables"
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{server_number}}/variables"
     method: PUT
     body: "{\"{{ item.key }}\": \"{{ item.value }}\" }"
   #  body: '{"macs": {{ hardware_macs | to_json }}}'
     body_format: json
     status_code: 200
     headers:
-      X-Auth-User: "{{ craton_username }}"
-      X-Auth-Token: "{{ craton_password }}"
-      X-Auth-Project: "{{ craton_project }}"
+      X-Auth-User: "{{ ansible_cmdline.craton_username }}"
+      X-Auth-Token: "{{ ansible_cmdline.craton_password }}"
+      X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
       Content-Type: application/json
   when:
     - server_created.json.id is defined

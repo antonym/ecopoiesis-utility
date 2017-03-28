@@ -22,17 +22,17 @@
       Content-Type: application/json
   register: server_created
 
-- name: set server_number to newly created host
+- name: set host_id to newly created host
   set_fact:
-    server_number: "{{ server_created.json.id }}"
+    host_id: "{{ server_created.json.id }}"
   when:
     - server_created.json.id is defined
 
-- name: update server name to server-id
+- name: update server name to host_id
   uri:
-    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ server_number }}"
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ host_id }}"
     method: PUT
-    body: '{"name": "server-{{ server_number }}"}'
+    body: '{"name": "server-{{ host_id }}"}'
     body_format: json
     status_code: 200
     headers:
@@ -47,7 +47,7 @@
 
 - name: update variables on server with macs
   uri:
-    url: "{{ ansible_cmdline.craton_url }}/hosts/{{server_number}}/variables"
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ host_id }}/variables"
     method: PUT
 #    body: '{"macs": {{ hardware_macs.0 | to_json }} }'
     body: '{"macs": {{ hardware_macs | to_json }}}'
@@ -63,7 +63,7 @@
 
 - name: push up variables for testing
   uri:
-    url: "{{ ansible_cmdline.craton_url }}/hosts/{{server_number}}/variables"
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ host_id }}/variables"
     method: PUT
     body: "{\"{{ item.key }}\": \"{{ item.value }}\" }"
   #  body: '{"macs": {{ hardware_macs | to_json }}}'

@@ -18,10 +18,10 @@
   with_items:
     - "{{ hardware_macs }}"
 
-- name: set server_number to craton server id
+- name: set host_id to craton server id
   set_fact:
-#    server_number: "{{ mac_lookup.json.hosts.0.id }}"
-     server_number: "{{ mac_lookup.results.0.json.hosts.0.id }}"
+#    host_id: "{{ mac_lookup.json.hosts.0.id }}"
+     host_id: "{{ mac_lookup.results.0.json.hosts.0.id }}"
   when:
 #    - mac_lookup.json.hosts.0.id is defined
     - mac_lookup.results.0.json.hosts.0.id

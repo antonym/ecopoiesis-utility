@@ -1,43 +1,14 @@
 ---
 
-- name: Gather LLDP facts about server
-  lldp:
-
-- name: Switch configurations LLDP dump
-  debug:
-    msg: "{{ lldp[item]['chassis']['name'] }} / {{ lldp[item]['port']['ifname'] }}"
-  with_items: "{{ lldp.keys() }}"
-
-- name: Run get_macs module to get list of all macs on server
-  get_macs: get_facts=yes
-
-- name: Check if server exists in Craton
-  uri:
-    url: '{{ ansible_cmdline.craton_url }}/hosts?details=all&vars=macs[*]:"{{ item }}"'
-    method: GET
-    return_content: yes
-    headers:
-      X-Auth-User: "{{ ansible_cmdline.craton_username }}"
-      X-Auth-Token: "{{ ansible_cmdline.craton_password }}"
-      X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
-  register: mac_lookup
-  with_items:
-    - "{{ hardware_macs }}"
-
-- name: set host_id to craton server id
-  set_fact:
-     host_id: "{{ item.json.hosts.0.id }}"
+- include: discover_lldp.yml
   when:
-    - item.json.hosts.0.id is defined
-  with_items: "{{ mac_lookup.results }}"
-  ignore_errors: true
+    - host_id is not defined
 
-- debug:
-    msg: "Server identified as Host ID: {{ host_id }}"
+- include: discover_mac.yml
   when:
-    - host_id is defined
+    - host_id is not defined
 
-- include: discover.yml
+- include: discover_create.yml
   when:
     - host_id is not defined
 

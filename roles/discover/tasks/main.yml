@@ -17,3 +17,8 @@
     host_id: "{{ new_host_id }}"
   when:
     - new_host_id is defined
+
+- debug:
+    msg: "Server identified as Host ID: {{ host_id }}"
+  when:
+    - host_id is defined

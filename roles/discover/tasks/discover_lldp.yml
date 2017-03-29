@@ -30,8 +30,3 @@
     - item.json.hosts.0.id is defined
   with_items: "{{ lldp_lookup.results }}"
   ignore_errors: true
-
-- debug:
-    msg: "Server identified as Host ID: {{ host_id }}"
-  when:
-    - host_id is defined

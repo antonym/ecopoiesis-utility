@@ -1,5 +1,10 @@
 ---
 
+- name: Ensure LLDP started
+  service:
+    name: lldpd
+    state: started
+
 - name: Gather LLDP facts about server
   lldp:
 

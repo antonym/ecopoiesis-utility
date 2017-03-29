@@ -30,6 +30,7 @@
   when:
     - item.json.hosts.0.id is defined
   with_items: "{{ mac_lookup.results }}"
+  ignore_errors: true
 
 - debug:
     msg: "Server identified as Host ID: {{ host_id }}"
@@ -39,3 +40,9 @@
 - include: discover.yml
   when:
     - host_id is not defined
+
+- name: set host_id to new_host_id if created
+  set_fact:
+    host_id: "{{ new_host_id }}"
+  when:
+    - new_host_id is defined

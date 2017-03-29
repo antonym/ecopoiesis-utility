@@ -22,17 +22,22 @@
       Content-Type: application/json
   register: server_created
 
-- name: set host_id to newly created host
+- name: set new_host_id to newly created host
   set_fact:
-    host_id: "{{ server_created.json.id }}"
+    new_host_id: "{{ server_created.json.id }}"
   when:
     - server_created.json.id is defined
 
-- name: update server name to host_id
+- debug:
+    msg: "Created Host ID: {{ new_host_id }} in Craton"
+  when:
+    - new_host_id is defined
+
+- name: update server name to new_host_id
   uri:
-    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ host_id }}"
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ new_host_id }}"
     method: PUT
-    body: '{"name": "server-{{ host_id }}"}'
+    body: '{"name": "server-{{ new_host_id }}"}'
     body_format: json
     status_code: 200
     headers:
@@ -41,13 +46,13 @@
       X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
       Content-Type: application/json
   when:
-    - server_created.json.id is defined
+    - new_host_id is defined
 
 ########### testing
 
 - name: update variables on server with macs
   uri:
-    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ host_id }}/variables"
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ new_host_id }}/variables"
     method: PUT
 #    body: '{"macs": {{ hardware_macs.0 | to_json }} }'
     body: '{"macs": {{ hardware_macs | to_json }}}'
@@ -59,11 +64,11 @@
       X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
       Content-Type: application/json
   when:
-    - server_created.json.id is defined
+    - new_host_id is defined
 
 - name: push up variables for testing
   uri:
-    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ host_id }}/variables"
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ new_host_id }}/variables"
     method: PUT
     body: "{\"{{ item.key }}\": \"{{ item.value }}\" }"
   #  body: '{"macs": {{ hardware_macs | to_json }}}'
@@ -75,7 +80,7 @@
       X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
       Content-Type: application/json
   when:
-    - server_created.json.id is defined
+    - new_host_id is defined
   with_items:
     - { key: 'ecopoiesis_bootstrapped', value: 'None' }
     - { key: 'ecopoiesis_boot_os', value: 'ubuntu' }

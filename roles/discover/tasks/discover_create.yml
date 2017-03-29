@@ -8,7 +8,7 @@
   set_fact:
      server_name: "{{ uuid_name.stdout | replace('-','') }}"
 
-- name: create server record with inventory
+- name: Create server record with inventory
   uri:
     url: "{{ ansible_cmdline.craton_url }}/hosts"
     method: POST
@@ -22,7 +22,7 @@
       Content-Type: application/json
   register: server_created
 
-- name: set new_host_id to newly created host
+- name: Set new_host_id to newly created host
   set_fact:
     new_host_id: "{{ server_created.json.id }}"
   when:
@@ -33,7 +33,7 @@
   when:
     - new_host_id is defined
 
-- name: update server name to new_host_id
+- name: Update server name to new_host_id
   uri:
     url: "{{ ansible_cmdline.craton_url }}/hosts/{{ new_host_id }}"
     method: PUT
@@ -48,13 +48,25 @@
   when:
     - new_host_id is defined
 
-########### testing
-
-- name: update variables on server with macs
+- name: Register Server's LLDP values
   uri:
     url: "{{ ansible_cmdline.craton_url }}/hosts/{{ new_host_id }}/variables"
     method: PUT
-#    body: '{"macs": {{ hardware_macs.0 | to_json }} }'
+    body: '{"lldp": {{ lldp | to_json }}}'
+    body_format: json
+    status_code: 200
+    headers:
+      X-Auth-User: "{{ ansible_cmdline.craton_username }}"
+      X-Auth-Token: "{{ ansible_cmdline.craton_password }}"
+      X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
+      Content-Type: application/json
+  when:
+    - new_host_id is defined
+
+- name: Register Servers MAC Addresses
+  uri:
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ new_host_id }}/variables"
+    method: PUT
     body: '{"macs": {{ hardware_macs | to_json }}}'
     body_format: json
     status_code: 200
@@ -71,7 +83,6 @@
     url: "{{ ansible_cmdline.craton_url }}/hosts/{{ new_host_id }}/variables"
     method: PUT
     body: "{\"{{ item.key }}\": \"{{ item.value }}\" }"
-  #  body: '{"macs": {{ hardware_macs | to_json }}}'
     body_format: json
     status_code: 200
     headers:

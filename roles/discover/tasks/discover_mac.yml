@@ -1,5 +1,8 @@
 ---
 
+- name: Run get_macs module to get list of all macs on server
+  get_macs: get_facts=yes
+
 - name: Check if server exists in Craton using MAC Addresses
   uri:
     url: '{{ ansible_cmdline.craton_url }}/hosts?details=all&vars=macs[*]:"{{ item }}"'

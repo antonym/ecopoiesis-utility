@@ -1,5 +1,13 @@
 ---
 
+- name: Gather LLDP facts about server
+  lldp:
+
+- name: Switch configurations LLDP dump
+  debug:
+    msg: "{{ lldp[item]['chassis']['name'] }} / {{ lldp[item]['port']['ifname'] }}"
+  with_items: "{{ lldp.keys() }}"
+
 - name: Run get_macs module to get list of all macs on server
   get_macs: get_facts=yes
 

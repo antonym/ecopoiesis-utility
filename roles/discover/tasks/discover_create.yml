@@ -113,6 +113,7 @@
     - { key: 'ecopoiesis_bootstrapped', value: 'None' }
     - { key: 'ecopoiesis_boot_os', value: 'ubuntu' }
     - { key: 'ecopoiesis_boot_os_version', value: 'xenial' }
+    - { key: 'ecopoiesis_boot_profile', value: 'osa' }
     - { key: 'ecopoiesis_boot_status', value: 'provision' }
     - { key: 'ecopoiesis_operational_status', value: 'None' }
     - { key: 'ecopoiesis_enforce_firmware', value: 'false' }

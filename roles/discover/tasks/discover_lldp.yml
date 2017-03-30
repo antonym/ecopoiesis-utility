@@ -2,15 +2,17 @@
 
 - name: Copy lldp.py modified plugin
   copy:
-    src: /opt/ecopoiesis-utility/roles/discovery/files/lldp.py
+    src: /opt/ecopoiesis-utility/roles/discover/files/lldp.py
     dest: /usr/local/lib/python2.7/dist-packages/ansible/modules/extras/network/lldp.py
     force: yes
+    remote_src: true
 
 - name: Copy lldpd.conf to etc
   copy:
-   src: lldpd.conf
+   src: /opt/ecopoiesis-utility/roles/discover/files/lldpd.conf
    dest: /etc/lldpd.conf
-
+   force: yes
+   remote_src: true
 - name: Ensure LLDP started
   service:
     name: lldpd

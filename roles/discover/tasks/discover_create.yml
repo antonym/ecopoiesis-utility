@@ -12,7 +12,7 @@
   uri:
     url: "{{ ansible_cmdline.craton_url }}/hosts"
     method: POST
-    body: '{"cloud_id": 1, "region_id": 1, "cell_id": 1, "name": "{{ server_name }}", "ip_address": "10.127.5.111", "device_type": "server"}'
+    body: '{"cloud_id": 1, "region_id": 1, "cell_id": 1, "name": "{{ server_name }}", "ip_address": "1.2.3.4", "device_type": "server"}'
     body_format: json
     status_code: 201
     headers:
@@ -38,6 +38,21 @@
     url: "{{ ansible_cmdline.craton_url }}/hosts/{{ new_host_id }}"
     method: PUT
     body: '{"name": "server-{{ new_host_id }}"}'
+    body_format: json
+    status_code: 200
+    headers:
+      X-Auth-User: "{{ ansible_cmdline.craton_username }}"
+      X-Auth-Token: "{{ ansible_cmdline.craton_password }}"
+      X-Auth-Project: "{{ ansible_cmdline.craton_project }}"
+      Content-Type: application/json
+  when:
+    - new_host_id is defined
+
+- name: Update server ip to equal new_host_id... dirty hack for now
+  uri:
+    url: "{{ ansible_cmdline.craton_url }}/hosts/{{ new_host_id }}"
+    method: PUT
+    body: '{"ip_address": "10.127.5.{{ new_host_id }}"}'
     body_format: json
     status_code: 200
     headers:

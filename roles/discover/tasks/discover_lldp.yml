@@ -4,6 +4,7 @@
   copy:
     src: lldp.py
     dest: /usr/local/lib/python2.7/dist-packages/ansible/modules/extras/network/lldp.py
+    force: yes
 
 - name: Copy lldpd.conf to etc
   copy:

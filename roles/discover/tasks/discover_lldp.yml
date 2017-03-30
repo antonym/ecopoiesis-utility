@@ -2,7 +2,7 @@
 
 - name: Copy lldp.py modified plugin
   copy:
-    src: lldp.py
+    src: /opt/ecopoiesis-utility/roles/discovery/files/lldp.py
     dest: /usr/local/lib/python2.7/dist-packages/ansible/modules/extras/network/lldp.py
     force: yes
 

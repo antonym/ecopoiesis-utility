@@ -1,0 +1,4 @@
+---
+  - name: Update HP DL380 Gen9
+    include: hp-dl380g9.yml
+    when: ansible_product_name == "ProLiant DL380 Gen9" 

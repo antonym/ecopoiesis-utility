@@ -5,4 +5,4 @@
     ecopoiesis_enabled: true
   roles:
     - discover
-    - status_install_os
+#    - status_install_os

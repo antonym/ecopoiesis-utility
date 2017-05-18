@@ -1,7 +1,0 @@
----
-
-  - include: dell.yml
-    when: ansible_system_vendor == "Dell Inc."
-
-  - include: hp.yml
-    when: ansible_system_vendor == "HP"

@@ -5,4 +5,5 @@
     ecopoiesis_enabled: true
   roles:
     - discover
+    - firmware
 #    - status_install_os

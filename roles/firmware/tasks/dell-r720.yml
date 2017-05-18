@@ -1,0 +1,8 @@
+---
+  - name: Copy firmware
+    copy: src=firmware/Dell_R720/ dest=/opt/firmware/payload/Dell_R720/ mode=0755
+
+  - name: Updating Firmware for Dell R720
+    command: /opt/firmware/payload/Dell_R720/{{ item.filename }} -q
+    ignore_errors: True
+    with_items: Dell_R720

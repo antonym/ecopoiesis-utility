@@ -1,8 +1,3 @@
 ---
-  - name: Start Dell Service
-    service: name=instsvcdrv state=started
-    ignore_errors: true
-
-  - name: Update Dell PowerEdge R720
-    include: dell-r720.yml
-    when: ansible_product_name == "PowerEdge R720"
+  - name: Run Dell System Update
+    command: dsu --non-interactive

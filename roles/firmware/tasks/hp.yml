@@ -1,4 +1,18 @@
 ---
-  - name: Update HP DL380 Gen9
-    include: hp-dl380g9.yml
-    when: ansible_product_name == "ProLiant DL380 Gen9" 
+  - name: Install fwpp repository
+    yum_repository:
+      name: fwpp
+      description: Firmware Pack for ProLiant
+      baseurl: http://{{ ansible_cmdline.hpsum_key }}:null@downloads.linux.hpe.com/repo/fwpp/rhel/7/x86_64/current/
+      state: present
+      file: fwpp.repo
+      enabled: yes
+      gpgcheck: no
+      gpgkey: file:///etc/pki/rpm-gpg/GPG-KEY-FirmwarePackforProLiant
+    when: ansible_distribution == "CentOS"
+
+  - name: Retrieve HP firmware updates for platform
+    command: yum install -y $(hpsum requires)
+
+  - name: Apply HP firmware updates for platform
+    command: hpsum upgrade --rewrite -y -v -d

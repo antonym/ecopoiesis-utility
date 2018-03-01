@@ -27,6 +27,7 @@
     package:
       name: sum
       state: present
+      update_cache: yes
 
   - name: Retrieve HP firmware updates for platform
     command: yum install -y $(hpsum requires)

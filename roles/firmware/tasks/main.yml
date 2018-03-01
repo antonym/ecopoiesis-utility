@@ -3,4 +3,5 @@
     when: ansible_system_vendor == "Dell Inc."
 
   - include: hp.yml
-    when: ansible_system_vendor == "HP" and ansible_cmdline.hpsum_key is_defined
+    when: ansible_system_vendor == "HPE"
+    # and ansible_cmdline.hpsum_key is_defined

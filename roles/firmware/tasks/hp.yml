@@ -11,6 +11,23 @@
       gpgkey: file:///etc/pki/rpm-gpg/GPG-KEY-FirmwarePackforProLiant
     when: ansible_distribution == "CentOS"
 
+  - name: Install hpsum repository
+    yum_repository:
+      name: hpsum
+      description: HPE Smart Update Manager
+      baseurl: http://downloads.linux.hpe.com/repo/hpsum/rhel/7/x86_64/current/
+      state: present
+      file: hpsum.repo
+      enabled: yes
+      gpgcheck: no
+      gpgkey: file:///etc/pki/rpm-gpg/GPG-KEY-hpsum
+    when: ansible_distribution == "CentOS"
+  
+  - name: Install hpsum package
+    package:
+      name: sum
+      state: present
+
   - name: Retrieve HP firmware updates for platform
     command: yum install -y $(hpsum requires)
 

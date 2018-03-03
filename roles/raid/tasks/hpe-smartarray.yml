@@ -12,5 +12,4 @@
 
   - name: HP Smart Array - Create RAID - Default mirror
     shell: "{{ smartarray_binary }} ctrl slot={{ smartarray_slot_number }} create type=ld drives=1I:1:1,1I:1:2 raid=1"
-    with_items: "{{ terraform_boot_profile }}"
     when: ansible_cmdline.role == "ceph" or ansible_cmdline.role == "haproxy"

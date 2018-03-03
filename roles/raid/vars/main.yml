@@ -1,2 +1,2 @@
 ---
-  smartarray_binary: /sbin/hpssacli
+  smartarray_binary: /sbin/ssacli

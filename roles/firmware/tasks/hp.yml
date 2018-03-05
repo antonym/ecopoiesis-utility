@@ -30,7 +30,7 @@
       update_cache: yes
 
   - name: Retrieve HP firmware updates for platform
-    command: yum install --downloaddir=/run/hpsum -y $(hpsum requires)
+    shell: yum install --downloaddir=/run/hpsum -y $(hpsum requires)
 
   - name: Apply HP firmware updates for platform
-    command: hpsum upgrade --rewrite -y -v -d
+    shell: hpsum upgrade --rewrite -y -v -d

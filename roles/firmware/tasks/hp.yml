@@ -29,8 +29,8 @@
       state: present
       update_cache: yes
 
-  - name: Retrieve HP firmware updates for platform
-    shell: yum install --downloaddir=/run/hpsum -y $(hpsum requires)
+#  - name: Retrieve HP firmware updates for platform
+#    shell: yum install --downloaddir=/run/hpsum -y $(hpsum requires)
 
-  - name: Apply HP firmware updates for platform
-    shell: hpsum upgrade --rewrite -y -v -d
+#  - name: Apply HP firmware updates for platform
+#    shell: hpsum upgrade --rewrite -y -v -d

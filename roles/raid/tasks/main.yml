@@ -1,7 +1,4 @@
 ---
-  - pause:
-      prompt: "WARNING, the RAID role is DATA DESTRUCTIVE... continuing in 30 seconds..."
-      seconds: 30
 
   - include: hpe-smartarray.yml
     when: ansible_system_vendor == "HPE"

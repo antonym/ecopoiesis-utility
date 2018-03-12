@@ -5,3 +5,4 @@
     - firmware
     - raid
     - remove_preflight
+    - power_reset

@@ -7,7 +7,7 @@
       mode: 0600
 
   - name: Remove preflight marker from deployment server
-    shell: "ssh -i /root/deploystate_key deploystate@{{ ansible_cmdline.deploy_host }} 'rm {{ ansible_cmdline.BOOTIF | replace(':', '-') | lower }}/preflight'"
+    shell: "ssh -o StrictHostKeyChecking=no -i /root/deploystate_key deploystate@{{ ansible_cmdline.deploy_host }} 'rm {{ ansible_cmdline.BOOTIF | replace(':', '-') | lower }}/preflight'"
     args:
       chdir: /root
     ignore_errors: true

@@ -33,6 +33,10 @@
     include: hp-dl360-gen10.yml
     when: ansible_product_name == "ProLiant DL360 Gen10"
 
+  - name: Update HP DL380 Gen10
+    include: hp-dl380-gen10.yml
+    when: ansible_product_name == "ProLiant DL380 Gen10"
+
 #  - name: Retrieve HP firmware updates for platform
 #    shell: yum install --downloaddir=/run/hpsum -y $(hpsum requires)
 

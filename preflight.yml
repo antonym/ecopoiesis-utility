@@ -4,3 +4,4 @@
   roles:
     - firmware
     - raid
+    - remove_preflight

@@ -1,15 +1,13 @@
 ---
 
   - name: Retrieve deploystate key
-    shell: wget http://{{ ansible_cmdline.deploy_host }}/deploystate_key -O /root/deploystate_key
-
-  - name: Set permissions on deploystate key
-    file:
-      path: /root/deploystate_key
+    get_url:
+      url: "http://{{ ansible_cmdline.deploy_host }}/deploystate_key"
+      dest: /root/deploystate_key
       mode: 0600
 
   - name: Remove preflight marker from deployment server
-    shell: "ssh -i deploystate_key deploystate@{{ ansible_cmdline.deploy_host }} 'rm {{ ansible_cmdline.BOOTIF | replace(':', '-') | lower }}/preflight'"
+    shell: "ssh -i /root/deploystate_key deploystate@{{ ansible_cmdline.deploy_host }} 'rm {{ ansible_cmdline.BOOTIF | replace(':', '-') | lower }}/preflight'"
     args:
       chdir: /root
     ignore_errors: true
